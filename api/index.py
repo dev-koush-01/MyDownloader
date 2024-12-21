@@ -4,12 +4,11 @@ import ffmpeg
 import os
 import tempfile
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 app.secret_key = 'your_secret_key'
 
-# Download directory
+# Use a temporary directory for downloads
 DOWNLOAD_DIR = tempfile.gettempdir()
-os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -38,11 +37,12 @@ def index():
                         .run()
                     )
                     file_name = output_file
-            
-            return send_file(file_name, as_attachment=True)
+                
+                return send_file(file_name, as_attachment=True)
 
         except Exception as e:
-            return render_template("index.html", error=str(e))
+            print(f"Error: {e}")
+            return render_template("index.html", error="An error occurred while processing your request.")
 
     return render_template("index.html")
 
