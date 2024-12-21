@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, send_file, redirect, url_for
 from yt_dlp import YoutubeDL
 import ffmpeg
 import os
+import tempfile
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Download directory
-DOWNLOAD_DIR = "C:/Users/koush/OneDrive/Desktop/MyDownloader/downloads"
+DOWNLOAD_DIR = tempfile.gettempdir()
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
